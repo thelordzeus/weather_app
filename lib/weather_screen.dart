@@ -106,9 +106,21 @@ class WeatherScreen extends StatelessWidget {
               //! a very important property to align the children evenly
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                AdditionalInfoitem(),
-                AdditionalInfoitem(),
-                AdditionalInfoitem(),
+                AdditionalInfoitem(
+                  icon: Icons.water_drop,
+                  label: 'Humidity',
+                  value: '91',
+                ),
+                AdditionalInfoitem(
+                  icon: Icons.air,
+                  label: 'Wind Speed',
+                  value: '7.5',
+                ),
+                AdditionalInfoitem(
+                  icon: Icons.beach_access,
+                  label: 'Pressure',
+                  value: '1000',
+                ),
               ],
             )
           ],

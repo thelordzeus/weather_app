@@ -2,8 +2,11 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:weather_app/additional_info_item.dart';
+import 'package:weather_app/weather_forecast_item.dart';
 
 class WeatherScreen extends StatelessWidget {
   const WeatherScreen({super.key});
@@ -29,6 +32,7 @@ class WeatherScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // main card
             SizedBox(
@@ -64,19 +68,48 @@ class WeatherScreen extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
-            // weather forecast card
-            Placeholder(
-              fallbackHeight: 150,
+            const Text(
+              'Weather Forecast',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-            SizedBox(
+            const SizedBox(
+              height: 16,
+            ),
+            const SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  HourlyForecastItem(),
+                  HourlyForecastItem(),
+                  HourlyForecastItem(),
+                  HourlyForecastItem(),
+                  HourlyForecastItem(),
+                  HourlyForecastItem(),
+                ],
+              ),
+            ),
+            const SizedBox(
               height: 20,
+            ),
+            const Text(
+              'Additional Information',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             // additional Information
-            Placeholder(
-              fallbackHeight: 150,
+            const SizedBox(
+              height: 16,
+            ),
+            const Row(
+              //! a very important property to align the children evenly
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                AdditionalInfoitem(),
+                AdditionalInfoitem(),
+                AdditionalInfoitem(),
+              ],
             )
           ],
         ),

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
 import 'package:weather_app/additional_info_item.dart';
 import 'package:weather_app/secrets.dart';
 import 'package:weather_app/weather_forecast_item.dart';
@@ -19,6 +20,7 @@ class WeatherScreen extends StatefulWidget {
 }
 
 class _WeatherScreenState extends State<WeatherScreen> {
+  late Future<Map<String, dynamic>> weather;
   Future<Map<String, dynamic>> getCurrentWeather() async {
     try {
       String cityName = 'London';
@@ -39,6 +41,12 @@ class _WeatherScreenState extends State<WeatherScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    weather = getCurrentWeather();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -50,14 +58,16 @@ class _WeatherScreenState extends State<WeatherScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              print('refresh');
+              setState(() {
+                weather = getCurrentWeather();
+              });
             },
             icon: const Icon(Icons.refresh),
           )
         ],
       ),
       body: FutureBuilder(
-        future: getCurrentWeather(),
+        future: weather,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
@@ -138,41 +148,10 @@ class _WeatherScreenState extends State<WeatherScreen> {
                 const SizedBox(
                   height: 16,
                 ),
-                // const SingleChildScrollView(
-                //   scrollDirection: Axis.horizontal,
-                //   child: Row(
-                //     children: [
-                //       HourlyForecastItem(
-                //         time: '03:00',
-                //         icon: Icons.sunny,
-                //         temperature: '300.52',
-                //       ),
-                //       HourlyForecastItem(
-                //         time: '03:00',
-                //         icon: Icons.cloud,
-                //         temperature: '300.52',
-                //       ),
-                //       HourlyForecastItem(
-                //         time: '03:00',
-                //         icon: Icons.water,
-                //         temperature: '300.52',
-                //       ),
-                //       HourlyForecastItem(
-                //         time: '03:00',
-                //         icon: Icons.cloud,
-                //         temperature: '300.52',
-                //       ),
-                //       HourlyForecastItem(
-                //         time: '03:00',
-                //         icon: Icons.sunny,
-                //         temperature: '300.52',
-                //       ),
-                //     ],
-                //   ),
-                // ),
-                // this widget builds only on demand
+
                 SizedBox(
                   height: 120,
+                  // listView builder builds only on demand following lazy approach to save memory
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     itemCount: 5,
@@ -180,8 +159,9 @@ class _WeatherScreenState extends State<WeatherScreen> {
                       final hourlyForecast = data['list'][index + 1];
                       final hourlySky =
                           data['list'][index + 1]['weather'][0]['main'];
+                      final time = DateTime.parse(hourlyForecast['dt_txt']);
                       return HourlyForecastItem(
-                        time: hourlyForecast['dt'].toString(),
+                        time: DateFormat.j().format(time),
                         icon: hourlySky == 'Clouds' || hourlySky == 'Rain'
                             ? Icons.cloud
                             : Icons.sunny,

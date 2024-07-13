@@ -138,41 +138,56 @@ class _WeatherScreenState extends State<WeatherScreen> {
                 const SizedBox(
                   height: 16,
                 ),
-                const SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      HourlyForecastItem(
-                        time: '03:00',
-                        icon: Icons.sunny,
-                        temperature: '300.52',
-                      ),
-                      HourlyForecastItem(
-                        time: '03:00',
-                        icon: Icons.cloud,
-                        temperature: '300.52',
-                      ),
-                      HourlyForecastItem(
-                        time: '03:00',
-                        icon: Icons.water,
-                        temperature: '300.52',
-                      ),
-                      HourlyForecastItem(
-                        time: '03:00',
-                        icon: Icons.cloud,
-                        temperature: '300.52',
-                      ),
-                      HourlyForecastItem(
-                        time: '03:00',
-                        icon: Icons.sunny,
-                        temperature: '300.52',
-                      ),
-                      HourlyForecastItem(
-                        time: '03:00',
-                        icon: Icons.sunny,
-                        temperature: '300.52',
-                      ),
-                    ],
+                // const SingleChildScrollView(
+                //   scrollDirection: Axis.horizontal,
+                //   child: Row(
+                //     children: [
+                //       HourlyForecastItem(
+                //         time: '03:00',
+                //         icon: Icons.sunny,
+                //         temperature: '300.52',
+                //       ),
+                //       HourlyForecastItem(
+                //         time: '03:00',
+                //         icon: Icons.cloud,
+                //         temperature: '300.52',
+                //       ),
+                //       HourlyForecastItem(
+                //         time: '03:00',
+                //         icon: Icons.water,
+                //         temperature: '300.52',
+                //       ),
+                //       HourlyForecastItem(
+                //         time: '03:00',
+                //         icon: Icons.cloud,
+                //         temperature: '300.52',
+                //       ),
+                //       HourlyForecastItem(
+                //         time: '03:00',
+                //         icon: Icons.sunny,
+                //         temperature: '300.52',
+                //       ),
+                //     ],
+                //   ),
+                // ),
+                // this widget builds only on demand
+                SizedBox(
+                  height: 120,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 5,
+                    itemBuilder: (context, index) {
+                      final hourlyForecast = data['list'][index + 1];
+                      final hourlySky =
+                          data['list'][index + 1]['weather'][0]['main'];
+                      return HourlyForecastItem(
+                        time: hourlyForecast['dt'].toString(),
+                        icon: hourlySky == 'Clouds' || hourlySky == 'Rain'
+                            ? Icons.cloud
+                            : Icons.sunny,
+                        temperature: hourlyForecast['main']['temp'].toString(),
+                      );
+                    },
                   ),
                 ),
                 const SizedBox(
